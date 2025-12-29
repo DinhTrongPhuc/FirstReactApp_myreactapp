@@ -10,10 +10,13 @@ import {
 import TodoItem from "./TodoItem";
 
 function App() {
-  const [todo, setTodo] = useState("");
-  const [todos, setTodos] = useState([]);
-  const [filter, setFilter] = useState("all");
-  const [darkMode, setDarkMode] = useState(false);
+    const [todo, setTodo] = useState("");
+    const [todos, setTodos] = useState([]);
+    const [filter, setFilter] = useState("all");
+    const [darkMode, setDarkMode] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
 
     //LOAD DATA KHI MỞ APP  
     useEffect(() => {
@@ -21,9 +24,19 @@ function App() {
     }, []);
 
     const fetchTodos = async () => {
-    const res = await getTodos();
-    setTodos(res.data);
-    };//end
+        setLoading(true);
+        setError(null);
+
+        try {
+            const res = await getTodos();
+            setTodos(res.data);
+        } catch (err) {
+            setError("Không thể tải danh sách công việc");
+        } finally {
+            setLoading(false);
+        }
+    };
+
   
     useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
@@ -38,30 +51,18 @@ function App() {
 
 
   // Load từ localStorage
-  useEffect(() => {
-    const savedTodos = localStorage.getItem("todos");
-    if (savedTodos) {
-      setTodos(JSON.parse(savedTodos));
-    }
-  }, []);
+    useEffect(() => {
+        const savedTodos = localStorage.getItem("todos");
+        if (savedTodos) {
+        setTodos(JSON.parse(savedTodos));
+        }
+    }, []);
 
   // Lưu localStorage
-  useEffect(() => {
-    localStorage.setItem("todos", JSON.stringify(todos));
-  }, [todos]);
+    useEffect(() => {
+        localStorage.setItem("todos", JSON.stringify(todos));
+    }, [todos]);
 
-//   const handleAddTodo = () => {
-//         if (todo.trim() === "") return;
-//             setTodos([
-//             ...todos,
-//             {
-//                 id: Date.now(),
-//                 text: todo,
-//                 completed: false,
-//             },
-//         ]);
-//     setTodo("");
-//   };
 
     const handleAddTodo = async (text) => {
         if (!text.trim()) return;
@@ -73,7 +74,6 @@ function App() {
             console.error("Add todo failed", error);
         }
     };
-
 
   
     const toggleTodo = (id) => {
@@ -87,25 +87,29 @@ function App() {
     };
 
     const handleToggle = async (id) => {
-        await toggleTodo(id);
-        setTodos(
-            todos.map((t) =>
-            t.id === id ? { ...t, completed: !t.completed } : t
+        try {
+            await toggleTodo(id);
+            setTodos((prev) =>
+            prev.map((t) =>
+                t.id === id ? { ...t, completed: !t.completed } : t
             )
-        );
+            );
+        } catch {
+            setError("Cập nhật trạng thái thất bại");
+        }
     };
+
+    const handleDeleteTodo = async (id) => {
+        try{
+            await deleteTodo(id);
+            setTodos(todos.filter((t) => t.id !== id));
+        }
+        catch{
+            setError("Xoá công việc thất bại");
+        }
+    };
+
     
-    const handleDeleteTodo = (id) => {
-        setTodos(todos.filter((todo) => todo.id !== id));
-    };
-
-    const handleDelete = async (id) => {
-        await deleteTodo(id);
-        setTodos(todos.filter((t) => t.id !== id));
-    };
-
-
-
     const filteredTodos = todos.filter((todo) => {
         if (filter === "active") return !todo.completed;
         if (filter === "completed") return todo.completed;
@@ -128,14 +132,19 @@ function App() {
 
         <div className="todo-input">
             <input
-                value={todo}
-                onChange={(e) => setTodo(e.target.value)}
-                placeholder="Nhập công việc..."
+            value={todo}
+            onChange={(e) => setTodo(e.target.value)}
+            placeholder="Nhập công việc..."
             />
             <button onClick={() => handleAddTodo(todo)}>
                 Add
             </button>
         </div>
+
+        {loading && <p className="loading">⏳ Đang tải...</p>}
+
+        {error && <p className="error">{error}</p>}
+
 
         {/* Filter Section */}
         <div className="filter">

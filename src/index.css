@@ -187,6 +187,21 @@
   cursor: pointer;
 }
 
+.loading {
+  text-align: center;
+  color: #555;
+  margin: 10px 0;
+}
+
+.error {
+  background: #ffe6e6;
+  color: #d60000;
+  padding: 8px;
+  border-radius: 6px;
+  margin: 10px 0;
+}
+
+
 /* media query screens */
 @media (max-width: 480px) {
   .todo-card {
