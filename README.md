@@ -1,73 +1,86 @@
-# React + TypeScript + Vite
+# 📝 Todo App (React + Node.js API)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 📌 Giới thiệu
+Đây là một ứng dụng **Todo App** được xây dựng theo mô hình **Client – Server**:
 
-Currently, two official plugins are available:
+- **Frontend**: React (Vite)
+- **Backend**: Node.js + Express (REST API)
+- **Test API**: Postman
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Ứng dụng cho phép người dùng:
+- Xem danh sách công việc
+- Thêm công việc mới
+- Đánh dấu hoàn thành
+- Xoá công việc
+- Hiển thị loading và xử lý lỗi khi gọi API
+- Giao diện hỗ trợ Dark Mode & Responsive
 
-## React Compiler
+## 🧱 Kiến trúc hệ thống
+React (Frontend)
+|
+| axios
+v
+Node.js API (Express)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Frontend **không lưu dữ liệu**
+- Backend chịu trách nhiệm **xử lý và lưu dữ liệu**
+- React chỉ hiển thị dữ liệu lấy từ API
 
-## Expanding the ESLint configuration
+## ⚙️ Công nghệ sử dụng
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Frontend
+- React
+- Vite
+- Axios
+- CSS thuần (Responsive + Dark Mode)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Backend
+- Node.js
+- Express
+- CORS
+- RESTful API
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Công cụ
+- Postman (test API)
+- Git / GitHub
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 📁 Cấu trúc thư mục (Frontend)
+src/
+├── api/
+│ └── todoApi.js # Các hàm gọi API
+├── components/
+│ ├── TodoItem.jsx
+├── App.jsx
+├── main.tsx
+└── index.css
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 🚀 Chức năng chính
+
+- 📄 Load danh sách Todo từ API
+- ➕ Thêm Todo mới
+- ✅ Đánh dấu hoàn thành
+- ❌ Xoá Todo
+- ⏳ Hiển thị loading khi gọi API
+- ⚠️ Hiển thị lỗi khi API thất bại
+- 🌙 Dark Mode
+- 📱 Responsive Mobile
+
+## ▶️ Cách chạy project
+### 1️⃣ Chạy Backend (API)
+
+```bash
+cd todo-api
+npm install
+node index.js
+API chạy tại: http://localhost:3001
+
+### 2️⃣ Chạy Frontend (React)
+cd my-react-app
+npm install
+npm run dev
+Mở trình duyệt: http://localhost:5173
+
+
