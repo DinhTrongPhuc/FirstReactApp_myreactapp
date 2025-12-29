@@ -76,11 +76,13 @@ cd todo-api
 npm install
 node index.js
 API chạy tại: http://localhost:3001
+```
 
 ### 2️⃣ Chạy Frontend (React)
+```bash
 cd my-react-app
 npm install
 npm run dev
 Mở trình duyệt: http://localhost:5173
-
+```
 
