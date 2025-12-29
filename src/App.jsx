@@ -7,7 +7,7 @@ import {
     deleteTodo,
 } from "./api/todoApi";
 
-import TodoItem from "./TodoItem";
+import TodoItem from "./components/TodoItem";
 
 function App() {
     const [todo, setTodo] = useState("");
